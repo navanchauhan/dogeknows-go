@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"math"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 	"github.com/meilisearch/meilisearch-go"
@@ -13,11 +15,23 @@ import (
 type SearchQuery struct {
 	Query      string
 	MaxResults int64
+	Offset     int64
 }
 
 type SearchResponse struct {
 	Success       bool
 	SearchResults []interface{}
+	NumResults    int
+	TotalResults  int64
+	MoreResults   bool
+	OriginalQuery SearchQuery
+	Offset        int64
+	LastOffset    int64
+	NumPages      int
+}
+
+func pageCount(total int, perPage int) int {
+	return int(math.Ceil(float64(total) / float64(perPage)))
 }
 
 func main() {
@@ -38,30 +52,61 @@ func main() {
 
 	index := client.Index("fda510k")
 
-	tmpl := template.Must(template.ParseFiles("index.html"))
-
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodPost {
-			tmpl.Execute(w, nil)
-			return
+		t, _ := template.ParseFiles("search.gtpl")
+		t.Execute(w, nil)
+	})
+
+	searchResTemplate := template.Must(template.ParseFiles("results.gtpl"))
+
+	http.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		fmt.Println(r.Form)
+		if r.Form["query"] != nil || r.FormValue("query") != "" {
+			fmt.Println("query:", r.Form["query"])
+			var myOffset int64
+			if r.Form["offset"] != nil {
+				offset, _ := strconv.ParseInt(r.FormValue("offset"), 10, 64)
+				myOffset = offset
+				if offset < 0 {
+					myOffset = 0
+				}
+			} else {
+				offset := int64(0)
+				myOffset = offset
+			}
+			query := SearchQuery{
+				Query:      r.FormValue("query"),
+				MaxResults: 100,
+				Offset:     myOffset,
+			}
+
+			res, err := index.Search(query.Query, &meilisearch.SearchRequest{
+				Limit:  query.MaxResults,
+				Offset: query.Offset,
+			})
+
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			numPages := pageCount(int(res.EstimatedTotalHits), int(query.MaxResults))
+
+			searchResTemplate.Execute(w, SearchResponse{
+				Success:       true,
+				SearchResults: res.Hits,
+				NumResults:    len(res.Hits) + int(query.Offset),
+				TotalResults:  res.EstimatedTotalHits,
+				MoreResults:   res.EstimatedTotalHits > query.MaxResults,
+				OriginalQuery: query,
+				Offset:        query.Offset + query.MaxResults,
+				LastOffset:    query.Offset - query.MaxResults,
+				NumPages:      numPages,
+			})
+		} else {
+			fmt.Println("query is empty")
 		}
-		query := SearchQuery{
-			Query:      r.FormValue("query"),
-			MaxResults: 100,
-		}
-
-		res, err := index.Search(query.Query, &meilisearch.SearchRequest{
-			Limit: query.MaxResults,
-		})
-
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		fmt.Println(res.Hits)
-
-		tmpl.Execute(w, SearchResponse{Success: true, SearchResults: res.Hits})
 	})
 
 	fmt.Println("Listening on port 8080")

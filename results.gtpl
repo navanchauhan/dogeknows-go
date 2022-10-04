@@ -1,12 +1,9 @@
-    <h1>DogeKnows</h1>
-    <form method="POST">
-        <label>Query:</label><br />
-        <input type="text" name="query" {{if .Success }} value="{{.OriginalQuery.Query}}" {{end}}><br />
-        <input name="offset" value="{{.Offset}}" type="hidden"><br /> 
-        <input type="submit">
-    </form>
-{{if .Success}}
-<h2>Search Results</h2>
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Search Results</h1>
+<p>Showing results for <b>{{.OriginalQuery.Query}}</b></p>
+<p>Go <a href="/">home</a></p>
 <p>Showing {{.NumResults}} of {{.TotalResults}}</p>
     <table border="1">
         <tr>
@@ -30,6 +27,8 @@
     {{ end }}
     </table>
     {{ if .MoreResults }}
-    <p>Load More</p>
+    <a href="/search?query={{.OriginalQuery.Query}}&offset={{.LastOffset}}"> <p>Previous Page</p></a>
+    <a href="/search?query={{.OriginalQuery.Query}}&offset={{.Offset}}"> <p>Next Page</p></a>
     {{ end }}
-{{end}}
+</body>
+</html>
