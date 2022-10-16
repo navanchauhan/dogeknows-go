@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{.OriginalQuery.Query}} - DogeKnows</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/32c297b57b.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <section class="hero is-small is-primary">
+        <div class="hero-body">
+          <h1 class="title">
+            DogeKnows
+          </h1>
+          <p class="subtitle">
+            Full-text search FDA 510(k) database
+          </p>
+        </div>
+      </section>
+      <section class="section">
+    <div class="container">
+        <div class="container">
+            <form action="/2.0/search" method="GET">
+              <div class="field has-addons">
+                <div class="control is-expanded has-icons-left">
+                  <input class="input" type="text" name="query" value="{{.OriginalQuery.Query}}" placeholder="Search Query" spellcheck="false">
+                  <span class="icon is-left">
+                    <i class="fa-regular fa-magnifying-glass"></i>
+                  </span>
+                </div>
+                <div class="control">
+                  <input class="button is-primary" type="submit" value="Search">
+                </div>
+              </div>
+            </form>
+          </div>
+<p>Showing {{.NumResults}} of {{.TotalResults}} (Estimated) </p>
+</div>
+</section>
+<section class="section">
+    <div class="container">
+    <table class="table">
+        <tr>
+            <th>510(k) Number</th>
+            <th>Title</th>
+            <th>Applicant</th>
+            <th>Hit Details</th>
+            <th>Submission Date</th>
+            <th>Predicates</th>
+        </tr>
+    {{ range .SearchResults }}
+    <tr>
+        <td><a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.id}}">{{ .id }}</a></td>
+        <td>{{ .title }}</td>
+        <td>{{ .applicant }}</td>
+        <td>{{unescapeHTML ._formatted.full_text}}</td>
+        <td>{{ .submission_date }}</td>
+        <td>{{ range .predicates}}
+            <a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.}}">{{ . }}</a>,
+            {{ end }}
+        </td>
+    </tr>
+    {{ end }}
+    </table>
+</div>
+</section>
+    {{ if .MoreResults }}
+    <a href="/2.0/search?query={{.OriginalQuery.Query}}&offset={{.LastOffset}}"> <p>Previous Page</p></a>
+    <a href="/2.0/search?query={{.OriginalQuery.Query}}&offset={{.Offset}}"> <p>Next Page</p></a>
+    {{ end }}
+</body>
+</html>

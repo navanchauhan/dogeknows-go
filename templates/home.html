@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DogeKnows!</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/32c297b57b.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+  <section class="hero is-medium is-primary">
+    <div class="hero-body">
+      <h1 class="title">
+        DogeKnows
+      </h1>
+      <p class="subtitle">
+        Full-text search FDA 510(k) database
+      </p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <form action="/2.0/search" method="GET">
+        <div class="field has-addons">
+          <div class="control is-expanded has-icons-left">
+            <input class="input is-large" type="text" name="query" value="{{.OriginalQuery.Query}}" placeholder="Search Query" spellcheck="false">
+            <span class="icon is-small is-left">
+              <i class="fa-regular fa-magnifying-glass"></i>
+            </span>
+          </div>
+          <div class="control">
+            <input class="button is-primary is-large" type="submit" value="Search">
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
