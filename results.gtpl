@@ -10,6 +10,7 @@
             <th>510(k) Number</th>
             <th>Title</th>
             <th>Applicant</th>
+            <th>Hit Details</th>
             <th>Submission Date</th>
             <th>Predicates</th>
         </tr>
@@ -18,6 +19,7 @@
         <td><a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.id}}">{{ .id }}</a></td>
         <td>{{ .title }}</td>
         <td>{{ .applicant }}</td>
+        <td>{{unescapeHTML ._formatted.full_text}}</td>
         <td>{{ .submission_date }}</td>
         <td>{{ range .predicates}}
             <a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.}}">{{ . }}</a>,

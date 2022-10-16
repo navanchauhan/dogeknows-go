@@ -57,7 +57,19 @@ func main() {
 		t.Execute(w, nil)
 	})
 
-	searchResTemplate := template.Must(template.ParseFiles("results.gtpl"))
+	funcMap := template.FuncMap{
+		"unescapeHTML": func(s string) template.HTML {
+			return template.HTML(s)
+		},
+	}
+
+	//searchResTemplate := template.Must(template.ParseFiles("results.gtpl"))
+	searchResTemplate := template.Must(template.New("results.gtpl").Funcs(funcMap).ParseFiles("results.gtpl"))
+
+	if err != nil {
+		fmt.Println("Error parsing template")
+		os.Exit(1)
+	}
 
 	http.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
@@ -84,6 +96,17 @@ func main() {
 			res, err := index.Search(query.Query, &meilisearch.SearchRequest{
 				Limit:  query.MaxResults,
 				Offset: query.Offset,
+				AttributesToRetrieve: []string{
+					"title",
+					"applicant",
+					"submission_date",
+					"predicates",
+					"id",
+				},
+				AttributesToCrop:      []string{"full_text"},
+				AttributesToHighlight: []string{"full_text"},
+				HighlightPreTag:       "<mark>",
+				HighlightPostTag:      "</mark>",
 			})
 
 			if err != nil {
