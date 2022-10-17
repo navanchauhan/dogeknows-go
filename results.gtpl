@@ -29,8 +29,8 @@
     {{ end }}
     </table>
     {{ if .MoreResults }}
-    <a href="/search?query={{.OriginalQuery.Query}}&offset={{.LastOffset}}"> <p>Previous Page</p></a>
-    <a href="/search?query={{.OriginalQuery.Query}}&offset={{.Offset}}"> <p>Next Page</p></a>
+    <a href="/classic/search?query={{.OriginalQuery.Query}}&offset={{.LastOffset}}"> <p>Previous Page</p></a>
+    <a href="/classic/search?query={{.OriginalQuery.Query}}&offset={{.Offset}}"> <p>Next Page</p></a>
     {{ end }}
 </body>
 </html>

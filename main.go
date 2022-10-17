@@ -52,12 +52,12 @@ func main() {
 
 	index := client.Index("fda510k")
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/classic/", func(w http.ResponseWriter, r *http.Request) {
 		t, _ := template.ParseFiles("search.gtpl")
 		t.Execute(w, nil)
 	})
 
-	http.HandleFunc("/2.0/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		t, _ := template.ParseFiles("templates/home.html")
 		t.Execute(w, nil)
 	})
@@ -79,7 +79,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	http.HandleFunc("/2.0/search", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		fmt.Println(r.Form)
 		if r.Form["query"] != nil || r.FormValue("query") != "" {
@@ -140,7 +140,7 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/classic/search", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		fmt.Println(r.Form)
 		if r.Form["query"] != nil || r.FormValue("query") != "" {
