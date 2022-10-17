@@ -39,6 +39,32 @@
 </div>
 </section>
 <section class="section">
+    <div class="container">
+        {{ range .SearchResults }}
+        <div class="card mb-4">
+            <header class="card-header">
+                <p class="card-header-title">
+                {{.applicant}}</p>
+            </header>
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-content">
+                        <p class="title is-4">{{ .title }}</p>
+                    </div>
+                </div>
+                <div class="content">
+                    {{.submission_date }} - {{unescapeHTML ._formatted.full_text}}
+                </div>
+            </div>
+            <footer class="card-footer">
+                {{ range .predicates}}
+                    <a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.}}" class="card-footer-item">{{ . }}</a>
+                {{ end }}
+            </footer>
+        </div>
+        {{ end }}
+    </div>
+    <!--
     <div class="table-container">
     <table class="table">
         <tr>
@@ -63,7 +89,7 @@
     </tr>
     {{ end }}
     </table>
-</div>
+</div>-->
 </section>
     {{ if .MoreResults }}
     <a href="/2.0/search?query={{.OriginalQuery.Query}}&offset={{.LastOffset}}"> <p>Previous Page</p></a>
