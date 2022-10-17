@@ -54,7 +54,7 @@ func main() {
 		Host: meili_host,
 	})
 
-	index := client.Index("fda510k")
+	index := client.Index("510k")
 
 	http.HandleFunc("/classic/", func(w http.ResponseWriter, r *http.Request) {
 		t, _ := template.ParseFiles("templates/search.gtpl")
@@ -97,9 +97,26 @@ func main() {
 					"applicant",
 					"decision",
 					"decision_date",
+					"full_text",
 					"id",
 					"predicates",
 					"submission_date",
+					"contact",
+					"STREET1",
+					"STREET2",
+					"CITY",
+					"STATE",
+					"ZIP",
+					"COUNTRY_CODE",
+					"postal_code",
+					"REVIEWADVISECOMM",
+					"PRODUCTCODE",
+					"STATEORSUMM",
+					"CLASSADVISECOMM",
+					"SSPINDICATOR",
+					"TYPE",
+					"THIRDPARTY",
+					"EXPEDITEDREVIEW",
 				}}, &res)
 			fmt.Println(res)
 			documentDetailsTemplate2.Execute(w, DocumentResponse{

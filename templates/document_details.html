@@ -63,6 +63,15 @@
                         <td>{{.SearchResults.applicant}}</td>
                     </tr>
                     <tr>
+                        <th>Contact</th>
+                        <td>
+                            {{.SearchResults.contact}}<br>
+                            {{.SearchResults.STREET1}} {{.SearchResults.STREET2}}<br>
+                            {{.SearchResults.CITY}}, {{.SearchResults.STATE}} {{.SearchResults.ZIP}}<br>
+                            {{.SearchResults.COUNTRY_CODE}}
+                        </td>
+                    </tr>
+                    <tr>
                         <th>Decision</th>
                         <td>{{.SearchResults.decision}}</td>
                     </tr>
@@ -77,13 +86,40 @@
                     <tr>
                         <th>Predicates</th>
                         <td>{{ range .SearchResults.predicates}}
-                            <a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.}}">{{ . }}</a>&#32; 
+                            <a href="/dbentry?id={{.}}">{{ . }}</a>&#32; 
                         {{ end }}</td>
+                    </tr>
+                    <tr>
+                        <th>Decision</th>
+                        <td>{{.SearchResults.decision}}</td>
+                    </tr>
+                    <tr>
+                        <th>Product Code</th>
+                        <td>{{.SearchResults.PRODUCTCODE}}</td>
+                    </tr>
+                    <tr>
+                        <th>SSP Indicator</th>
+                        <td>{{.SearchResults.SSPINDICATOR}}</td>
+                    </tr>
+                    <tr>
+                        <th>Type</th>
+                        <td>{{.SearchResults.TYPE}}</td>
+                    </tr>
+                    <tr>
+                        <th>Reviewed by Third Party</th>
+                        <td>{{.SearchResults.THIRDPARTY}}</td>
+                    </tr>
+                    <tr>
+                        <th>Full Text (OCR)</th>
+                        <td>
+                            {{.SearchResults.full_text}}
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
     </section>
+    
 </body>
 </html>
