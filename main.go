@@ -53,7 +53,7 @@ func main() {
 	index := client.Index("fda510k")
 
 	http.HandleFunc("/classic/", func(w http.ResponseWriter, r *http.Request) {
-		t, _ := template.ParseFiles("search.gtpl")
+		t, _ := template.ParseFiles("templates/search.gtpl")
 		t.Execute(w, nil)
 	})
 
@@ -69,7 +69,7 @@ func main() {
 	}
 
 	//searchResTemplate := template.Must(template.ParseFiles("results.gtpl"))
-	searchResTemplate := template.Must(template.New("results.gtpl").Funcs(funcMap).ParseFiles("results.gtpl"))
+	searchResTemplate := template.Must(template.New("results.gtpl").Funcs(funcMap).ParseFiles("templates/results.gtpl"))
 
 	// v2.0 UI
 	searchResultsTemplate2 := template.Must(template.New("search_results.html").Funcs(funcMap).ParseFiles("templates/search_results.html"))
