@@ -44,7 +44,7 @@
         <div class="card mb-4">
             <header class="card-header">
                 <p class="card-header-title">
-                {{.applicant}} - <a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.id}}">{{ .id }}</a></p>
+                {{.applicant}}&nbsp;<a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.id}}">{{ .id }}</a></p>
             </header>
             <div class="card-content">
                 <div class="media">
@@ -58,10 +58,11 @@
             </div>
             <footer class="card-footer">
                 <div class="card-footer-item">
+                <p class="content">
                 {{ range .predicates}}
-                    <a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.}}" >{{ . }}</a> 
+                    <a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.}}">{{ . }}</a>&#32; 
                 {{ end }}
-            </div>
+                </p></div>
             </footer>
         </div>
         {{ end }}
