@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{.OriginalQuery.Query}} - DogeKnows</title>
+    <title>{{.OriginalQuery.Query}} - {{.GlobalVars.Name}}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <script src="https://kit.fontawesome.com/32c297b57b.js" crossorigin="anonymous"></script>
   </head>
@@ -11,7 +11,7 @@
     <section class="hero is-small is-primary">
         <div class="hero-body">
           <h1 class="title">
-            DogeKnows
+            {{.GlobalVars.Name}}
           </h1>
           <p class="subtitle">
             Full-text search FDA 510(k) database
@@ -21,7 +21,7 @@
       <section class="section">
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
-              <li><a href="/">DogeKnows</a></li>
+              <li><a href="/">{{.GlobalVars.Name}}</a></li>
               <li class="is-active"><a href="#" aria-current="page">Search Results For "{{.OriginalQuery.Query}}"</a></li>
             </ul>
           </nav>

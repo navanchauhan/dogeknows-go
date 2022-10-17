@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{.SearchResults.id}} - DogeKnows</title>
+    <title>{{.SearchResults.id}} - {{.GlobalVars.Name}}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <script src="https://kit.fontawesome.com/32c297b57b.js" crossorigin="anonymous"></script>
   </head>
@@ -22,7 +22,7 @@
       <section class="section">
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
-              <li><a href="/">DogeKnows</a></li>
+              <li><a href="/">{{.GlobalVars.Name}}</a></li>
               <li class="is-active"><a href="#" aria-current="page">{{.SearchResults.id}}</a></li>
             </ul>
           </nav>
@@ -110,9 +110,9 @@
                         <td>{{.SearchResults.THIRDPARTY}}</td>
                     </tr>
                     <tr>
-                        <th>Full Text (OCR)</th>
+                        <th>Summary</th>
                         <td>
-                            {{.SearchResults.full_text}}
+                            <a href="{{.SummaryPDF}}">Summary</a>
                         </td>
                     </tr>
                 </tbody>
