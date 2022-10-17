@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{.SearchResults.id}} - DogeKnows</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/32c297b57b.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+
+    <section class="hero is-small is-primary">
+        <div class="hero-body">
+          <h1 class="title">
+            DogeKnows
+          </h1>
+          <p class="subtitle">
+            Full-text search FDA 510(k) database
+          </p>
+        </div>
+      </section>
+      <section class="section">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+              <li><a href="/">DogeKnows</a></li>
+              <li class="is-active"><a href="#" aria-current="page">{{.SearchResults.id}}</a></li>
+            </ul>
+          </nav>
+          <div class="container">
+            <div class="container">
+                <form action="/search" method="GET">
+                  <div class="field has-addons">
+                    <div class="control is-expanded has-icons-left">
+                      <input class="input" type="text" name="query" placeholder="Query" spellcheck="false">
+                      <span class="icon is-left">
+                        <i class="fa-regular fa-magnifying-glass"></i>
+                      </span>
+                    </div>
+                    <div class="control">
+                      <input class="button is-primary" type="submit" value="Search">
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="table-container">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>510(k) Number</th>
+                        <td><a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.SearchResults.id}}">{{ .SearchResults.id }}</a></td>
+                    </tr>
+                    <tr>
+                        <th>Title</th>
+                        <td>{{.SearchResults.title}}</td>
+                    </tr>
+                    <tr>
+                        <th>Applicant</th>
+                        <td>{{.SearchResults.applicant}}</td>
+                    </tr>
+                    <tr>
+                        <th>Decision</th>
+                        <td>{{.SearchResults.decision}}</td>
+                    </tr>
+                    <tr>
+                        <th>Decision Date</th>
+                        <td>{{.SearchResults.decision_date}}</td>
+                    </tr>
+                    <tr>
+                        <th>Submission Date</th>
+                        <td>{{.SearchResults.submission_date}}</td>
+                    </tr>
+                    <tr>
+                        <th>Predicates</th>
+                        <td>{{ range .SearchResults.predicates}}
+                            <a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.}}">{{ . }}</a>&#32; 
+                        {{ end }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </section>
+</body>
+</html>

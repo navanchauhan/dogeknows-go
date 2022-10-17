@@ -30,6 +30,10 @@ type SearchResponse struct {
 	NumPages      int
 }
 
+type DocumentResponse struct {
+	SearchResults interface{}
+}
+
 func pageCount(total int, perPage int) int {
 	return int(math.Ceil(float64(total) / float64(perPage)))
 }
@@ -73,11 +77,39 @@ func main() {
 
 	// v2.0 UI
 	searchResultsTemplate2 := template.Must(template.New("search_results.html").Funcs(funcMap).ParseFiles("templates/search_results.html"))
+	//documentDetailsTemplate2 := template.Must(template.New("document_details.html").Funcs(funcMap).ParseFiles("templates/document_details.html"))
+	documentDetailsTemplate2 := template.Must(template.ParseFiles("templates/document_details.html"))
 
 	if err != nil {
 		fmt.Println("Error parsing template")
 		os.Exit(1)
 	}
+
+	http.HandleFunc("/dbentry", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+		fmt.Println(r.Form)
+		var res interface{}
+		var documentID string = r.FormValue("id")
+		if r.Form["id"] != nil {
+			index.GetDocument(documentID, &meilisearch.DocumentQuery{
+				Fields: []string{
+					"title",
+					"applicant",
+					"decision",
+					"decision_date",
+					"id",
+					"predicates",
+					"submission_date",
+				}}, &res)
+			fmt.Println(res)
+			documentDetailsTemplate2.Execute(w, DocumentResponse{
+				SearchResults: res,
+			})
+		} else {
+			fmt.Println("No ID provided")
+		}
+
+	})
 
 	http.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
