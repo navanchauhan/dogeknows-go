@@ -1,8 +1,10 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"html/template"
+	"io/fs"
 	"math"
 	"net/http"
 	"os"
@@ -15,6 +17,9 @@ import (
 var globalVariables = GlobalVars{
 	Name: "510K Search",
 }
+
+//go:embed static/*
+var static embed.FS
 
 func create_pdf_url(year string, knumber string) string {
 	year_int, _ := strconv.Atoi(year[0:2])
@@ -45,6 +50,8 @@ func main() {
 		Host: meili_host,
 	})
 
+	contentStatic, _ := fs.Sub(static, "static")
+
 	funcMap := template.FuncMap{
 		"unescapeHTML": func(s string) template.HTML {
 			return template.HTML(s)
@@ -61,6 +68,8 @@ func main() {
 	documentDetailsTemplate2 := template.Must(template.New("document_details.html").Funcs(funcMap).ParseFiles("templates/document_details.html", "templates/components/section.html", "templates/components/header.html"))
 
 	index := client.Index("510k")
+
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.FS(contentStatic))))
 
 	http.HandleFunc("/classic/", func(w http.ResponseWriter, r *http.Request) {
 		classicIndexTemplate.Execute(w, BaseResponse{
