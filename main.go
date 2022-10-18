@@ -12,6 +12,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/meilisearch/meilisearch-go"
+	mytemplates "github.com/navanchauhan/dogeknows-go/templates"
 )
 
 var globalVariables = GlobalVars{
@@ -59,13 +60,13 @@ func main() {
 	}
 
 	// Classic UI Templates
-	classicIndexTemplate := template.Must(template.ParseFiles("templates/search.gtpl"))
-	searchResTemplate := template.Must(template.New("results.gtpl").Funcs(funcMap).ParseFiles("templates/results.gtpl"))
+	classicIndexTemplate := template.Must(template.ParseFS(mytemplates.Templates, "search.gtpl"))
+	searchResTemplate := template.Must(template.New("results.gtpl").Funcs(funcMap).ParseFS(mytemplates.Templates, "results.gtpl"))
 
 	// v2.0 UI Templates
-	indexTemplate := template.Must(template.ParseFiles("templates/home.html", "templates/components/section.html", "templates/components/header.html"))
-	searchResultsTemplate2 := template.Must(template.New("search_results.html").Funcs(funcMap).ParseFiles("templates/search_results.html", "templates/components/section.html", "templates/components/header.html"))
-	documentDetailsTemplate2 := template.Must(template.New("document_details.html").Funcs(funcMap).ParseFiles("templates/document_details.html", "templates/components/section.html", "templates/components/header.html"))
+	indexTemplate := template.Must(template.ParseFS(mytemplates.Templates, "home.html", "components/section.html", "components/header.html"))
+	searchResultsTemplate2 := template.Must(template.New("search_results.html").Funcs(funcMap).ParseFS(mytemplates.Templates, "search_results.html", "components/section.html", "components/header.html"))
+	documentDetailsTemplate2 := template.Must(template.New("document_details.html").Funcs(funcMap).ParseFS(mytemplates.Templates, "document_details.html", "components/section.html", "components/header.html"))
 
 	index := client.Index("510k")
 
