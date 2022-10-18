@@ -22,5 +22,10 @@
         </div>
       </form>
     </div>
+    <script>
+      if (typeof navigator.serviceWorker !== 'undefined') {
+        navigator.serviceWorker.register('/static/pwabuilder-sw.js')
+      }
+    </script>
   </body>
 </html>
