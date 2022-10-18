@@ -1,0 +1,45 @@
+{{define "hero-small"}}
+<section class="hero is-small is-primary">
+    <div class="hero-body">
+      <h1 class="title">
+        {{.GlobalVars.Name}}
+      </h1>
+      <p class="subtitle">
+        Full-text search FDA 510(k) database
+      </p>
+    </div>
+</section>
+{{end}}
+
+{{define "hero-medium"}}
+<section class="hero is-medium is-primary">
+  <div class="hero-body">
+    <h1 class="title">
+      {{ .GlobalVars.Name }}
+    </h1>
+    <p class="subtitle">
+      Full-text search FDA 510(k) database
+    </p>
+  </div>
+</section>
+{{end}}
+
+{{define "search-bar-small"}}
+<div class="container">
+  <div class="container">
+      <form action="/search" method="GET">
+        <div class="field has-addons">
+          <div class="control is-expanded has-icons-left">
+            <input class="input" type="text" name="query" placeholder="Query" spellcheck="false">
+            <span class="icon is-left">
+              <i class="fa-regular fa-magnifying-glass"></i>
+            </span>
+          </div>
+          <div class="control">
+            <input class="button is-primary" type="submit" value="Search">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+{{end}}

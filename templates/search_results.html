@@ -1,23 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{ template "header" . }}
     <title>{{.OriginalQuery.Query}} - {{.GlobalVars.Name}}</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <script src="https://kit.fontawesome.com/32c297b57b.js" crossorigin="anonymous"></script>
   </head>
   <body>
-    <section class="hero is-small is-primary">
-        <div class="hero-body">
-          <h1 class="title">
-            {{.GlobalVars.Name}}
-          </h1>
-          <p class="subtitle">
-            Full-text search FDA 510(k) database
-          </p>
-        </div>
-      </section>
+    {{ template "hero-medium" . }}
       <section class="section">
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
@@ -74,36 +62,37 @@
         </div>
         {{ end }}
     </div>
-    <!--
-    <div class="table-container">
-    <table class="table">
-        <tr>
-            <th>510(k) Number</th>
-            <th>Title</th>
-            <th>Applicant</th>
-            <th>Hit Details</th>
-            <th>Submission Date</th>
-            <th>Predicates</th>
-        </tr>
-    {{ range .SearchResults }}
-    <tr>
-        <td><a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.id}}">{{ .id }}</a></td>
-        <td>{{ .title }}</td>
-        <td>{{ .applicant }}</td>
-        <td>{{unescapeHTML ._formatted.full_text}}</td>
-        <td>{{ .submission_date }}</td>
-        <td>{{ range .predicates}}
-            <a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.}}">{{ . }}</a>,
-            {{ end }}
-        </td>
-    </tr>
-    {{ end }}
-    </table>
-</div>-->
 </section>
     {{ if .MoreResults }}
-    <a href="/2.0/search?query={{.OriginalQuery.Query}}&offset={{.LastOffset}}"> <p>Previous Page</p></a>
-    <a href="/2.0/search?query={{.OriginalQuery.Query}}&offset={{.Offset}}"> <p>Next Page</p></a>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column">
+                    <div class="field has-addons">
+                        
+            <button class="button is-primary is-light is-medium is-fullwidth" href="/search?query={{.OriginalQuery.Query}}&offset={{.LastOffset}}" title="Previous Page">
+                
+                <span class="icon is-small">
+                    <i class="fa-solid fa-left-long"></i>
+                  </span>
+                <span>Previous Page</span>
+                </button>
+                    </div>
+            </div>
+              <div class="column">
+                <div class="field has-addons">
+            <a class="button is-primary is-light is-medium is-fullwidth" href="/search?query={{.OriginalQuery.Query}}&offset={{.Offset}}" title="Next Page">
+                <span>
+                  Next Page
+                </span>
+                <span class="icon is-small">
+                    <i class="fa-solid fa-right-long"></i>
+                  </span>
+              </a></div>
+            </div>
+        </div></div>
+        </section>
+    
     {{ end }}
 </body>
 </html>
