@@ -13,7 +13,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request, index *meilisearch.In
 	r.ParseForm()
 	fmt.Println(r.Form)
 	if r.Form["query"] != nil || r.FormValue("query") != "" {
-		fmt.Println("query:", r.Form["query"])
+		//fmt.Println("query:", r.Form["query"])
 		var myOffset int64
 		if r.Form["offset"] != nil {
 			offset, _ := strconv.ParseInt(r.FormValue("offset"), 10, 64)
@@ -104,7 +104,7 @@ func documentHandler510k(w http.ResponseWriter, r *http.Request, index *meilisea
 				"THIRDPARTY",
 				"EXPEDITEDREVIEW",
 			}}, &res)
-		fmt.Println(res)
+		//fmt.Println(res)
 		var year = documentID[1:3]
 
 		template.Execute(w, DocumentResponse{
