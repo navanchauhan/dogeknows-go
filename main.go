@@ -56,9 +56,9 @@ func main() {
 	searchResTemplate := template.Must(template.New("results.gtpl").Funcs(funcMap).ParseFiles("templates/results.gtpl"))
 
 	// v2.0 UI Templates
-	indexTemplate := template.Must(template.ParseFiles("templates/home.html"))
-	searchResultsTemplate2 := template.Must(template.New("search_results.html").Funcs(funcMap).ParseFiles("templates/search_results.html"))
-	documentDetailsTemplate2 := template.Must(template.ParseFiles("templates/document_details.html"))
+	indexTemplate := template.Must(template.ParseFiles("templates/home.html", "templates/components/section.html", "templates/components/header.html"))
+	searchResultsTemplate2 := template.Must(template.New("search_results.html").Funcs(funcMap).ParseFiles("templates/search_results.html", "templates/components/section.html", "templates/components/header.html"))
+	documentDetailsTemplate2 := template.Must(template.New("document_details.html").Funcs(funcMap).ParseFiles("templates/document_details.html", "templates/components/section.html", "templates/components/header.html"))
 
 	index := client.Index("510k")
 
@@ -66,6 +66,10 @@ func main() {
 		classicIndexTemplate.Execute(w, BaseResponse{
 			GlobalVars: globalVariables,
 		})
+	})
+
+	http.HandleFunc("/classic/search", func(w http.ResponseWriter, r *http.Request) {
+		searchHandler(w, r, index, searchResTemplate)
 	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -80,10 +84,6 @@ func main() {
 
 	http.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request) {
 		searchHandler(w, r, index, searchResultsTemplate2)
-	})
-
-	http.HandleFunc("/classic/search", func(w http.ResponseWriter, r *http.Request) {
-		searchHandler(w, r, index, searchResTemplate)
 	})
 
 	fmt.Println("Listening on port 8080")
