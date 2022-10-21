@@ -96,6 +96,6 @@ func main() {
 		searchHandler(w, r, index, searchResultsTemplate2)
 	})
 
-	fmt.Println("Listening on port 8080")
-	http.ListenAndServe(":8080", nil)
+	fmt.Println("Listening on port 8752")
+	http.ListenAndServe(":8752", nil)
 }
