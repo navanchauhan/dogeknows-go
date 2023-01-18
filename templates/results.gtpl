@@ -28,9 +28,11 @@
     </tr>
     {{ end }}
     </table>
+    {{if .ShowPrev }}
+    <a href="/classic/search?query={{.OriginalQuery.Query}}&page={{.PrevPage}}&maxHits={{.MaxResults}}"> <p>Previous Page</p></a>
+    {{ end }}
     {{ if .MoreResults }}
-    <a href="/classic/search?query={{.OriginalQuery.Query}}&offset={{.LastOffset}}"> <p>Previous Page</p></a>
-    <a href="/classic/search?query={{.OriginalQuery.Query}}&offset={{.Offset}}"> <p>Next Page</p></a>
+    <a href="/classic/search?query={{.OriginalQuery.Query}}&page={{.PrevPage}}&maxHits={{.MaxResults}}"> <p>Next Page</p></a>
     {{ end }}
 </body>
 </html>

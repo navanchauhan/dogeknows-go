@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"html/template"
 	"io/fs"
-	"math"
 	"net/http"
 	"os"
 	"strconv"
@@ -29,10 +28,6 @@ func create_pdf_url(year string, knumber string) string {
 	} else {
 		return fmt.Sprintf("https://www.accessdata.fda.gov/cdrh_docs/pdf/%s.pdf", knumber)
 	}
-}
-
-func pageCount(total int, perPage int) int {
-	return int(math.Ceil(float64(total) / float64(perPage)))
 }
 
 func main() {

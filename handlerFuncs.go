@@ -14,26 +14,41 @@ func searchHandler(w http.ResponseWriter, r *http.Request, index *meilisearch.In
 	fmt.Println(r.Form)
 	if r.Form["query"] != nil || r.FormValue("query") != "" {
 		//fmt.Println("query:", r.Form["query"])
-		var myOffset int64
-		if r.Form["offset"] != nil {
-			offset, _ := strconv.ParseInt(r.FormValue("offset"), 10, 64)
-			myOffset = offset
-			if offset < 0 {
-				myOffset = 0
+		var pageNo int64
+		var maxHits int64
+		if r.Form["page"] != nil {
+			convertedInt, _ := strconv.ParseInt(r.FormValue("page"), 10, 64)
+			if convertedInt > 0 {
+				pageNo = convertedInt
+			} else {
+				pageNo = 1
 			}
 		} else {
-			offset := int64(0)
-			myOffset = offset
+			pageNo = 1
+		}
+		if r.Form["maxHits"] != nil {
+			convertedInt, _ := strconv.ParseInt(r.FormValue("maxHits"), 10, 64)
+			if convertedInt > 0 {
+				maxHits = convertedInt
+			} else {
+				maxHits = 20
+			}
+		} else {
+			maxHits = 20
+		}
+
+		if maxHits > 100 {
+			maxHits = 100
 		}
 		query := SearchQuery{
 			Query:      r.FormValue("query"),
-			MaxResults: 100,
-			Offset:     myOffset,
+			MaxResults: maxHits,
+			Page:       pageNo,
 		}
 
 		res, err := index.Search(query.Query, &meilisearch.SearchRequest{
-			Limit:  query.MaxResults,
-			Offset: query.Offset,
+			HitsPerPage: query.MaxResults,
+			Page:        query.Page,
 			AttributesToRetrieve: []string{
 				"title",
 				"applicant",
@@ -52,22 +67,39 @@ func searchHandler(w http.ResponseWriter, r *http.Request, index *meilisearch.In
 			return
 		}
 
-		numPages := pageCount(int(res.EstimatedTotalHits), int(query.MaxResults))
-
 		searchTemplate.Execute(w, SearchResponse{
 			GlobalVars:    globalVariables,
 			Success:       true,
 			SearchResults: res.Hits,
-			NumResults:    len(res.Hits) + int(query.Offset),
-			TotalResults:  res.EstimatedTotalHits,
-			MoreResults:   res.EstimatedTotalHits > query.MaxResults,
+			NumResults:    int(res.TotalHits) - (int(res.TotalPages)-int(res.Page))*int(res.HitsPerPage),
+			TotalResults:  res.TotalHits,
+			MoreResults:   res.Page < res.TotalPages,
 			OriginalQuery: query,
-			Offset:        query.Offset + query.MaxResults,
-			LastOffset:    query.Offset - query.MaxResults,
-			NumPages:      numPages,
+			NumPages:      int(res.TotalPages),
+			MaxResults:    maxHits,
+			CurPage:       res.Page,
+			ShowPrev:      res.Page > 1,
+			PrevPage:      res.Page - 1,
+			NextPage:      res.Page + 1,
 		})
+
 	} else {
-		fmt.Println("query is empty")
+		// Return empty search results
+		searchTemplate.Execute(w, SearchResponse{
+			GlobalVars:    globalVariables,
+			Success:       true,
+			SearchResults: []interface{}{},
+			NumResults:    0,
+			TotalResults:  0,
+			MoreResults:   false,
+			OriginalQuery: SearchQuery{},
+			NumPages:      0,
+			MaxResults:    0,
+			CurPage:       0,
+			ShowPrev:      false,
+			PrevPage:      0,
+			NextPage:      0,
+		})
 	}
 }
 

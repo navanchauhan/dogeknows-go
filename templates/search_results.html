@@ -73,25 +73,28 @@
         {{ end }}
     
 </section>
-    {{ if .MoreResults }}
+    
     <section class="section">
         <div class="container">
             <div class="columns">
+              {{if .ShowPrev }}
                 <div class="column">
                     <div class="field has-addons">
                         
-            <button class="button is-primary is-light is-medium is-fullwidth" href="/search?query={{.OriginalQuery.Query}}&offset={{.LastOffset}}" title="Previous Page">
+            <a class="button is-primary is-light is-medium is-fullwidth" href="/search?query={{.OriginalQuery.Query}}&page={{.PrevPage}}&maxHits={{.MaxResults}}" title="Previous Page">
                 
                 <span class="icon is-small">
                     <i class="fa-solid fa-left-long"></i>
                   </span>
                 <span>Previous Page</span>
-                </button>
+                </a>
                     </div>
             </div>
+            {{ end }}
+            {{ if .MoreResults }}
               <div class="column">
                 <div class="field has-addons">
-            <a class="button is-primary is-medium is-fullwidth" href="/search?query={{.OriginalQuery.Query}}&offset={{.Offset}}" title="Next Page">
+            <a class="button is-primary is-medium is-fullwidth" href="/search?query={{.OriginalQuery.Query}}&page={{.NextPage}}&maxHits={{.MaxResults}}" title="Next Page">
                 <span>
                   Next Page
                 </span>
@@ -100,10 +103,11 @@
                   </span>
               </a></div>
             </div>
+            {{ end }}
         </div></div>
         </section>
     
-    {{ end }}
+    
     <script>
       if (typeof navigator.serviceWorker !== 'undefined') {
         navigator.serviceWorker.register('/static/pwabuilder-sw.js')

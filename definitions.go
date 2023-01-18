@@ -3,7 +3,7 @@ package main
 type SearchQuery struct {
 	Query      string
 	MaxResults int64
-	Offset     int64
+	Page       int64
 }
 
 type BaseResponse struct {
@@ -21,6 +21,11 @@ type SearchResponse struct {
 	Offset        int64
 	LastOffset    int64
 	NumPages      int
+	MaxResults    int64
+	CurPage       int64
+	ShowPrev      bool
+	PrevPage      int64
+	NextPage      int64
 }
 
 type DocumentResponse struct {
