@@ -5,7 +5,9 @@
     <title>{{.OriginalQuery.Query}} - {{.GlobalVars.Name}}</title>
   </head>
   <body>
-    {{ template "hero-medium" . }}
+    <section class="section">
+    {{ template "navbar" . }}
+  </section>
       <section class="section">
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
@@ -33,18 +35,26 @@
 <p>Showing {{.NumResults}} of {{.TotalResults}} (Estimated) </p>
 </div>
 </section>
+<div class="container is-fluid">
+    <a href="#" class="button is-link" disabled>Export Results</a>
+    <a href="#" class="button is-link" disabled>Sort by Decision Date (ASC) </a>
+    <a href="#" class="button is-link" disabled>Sort by Decision Date (DESC) </a>
+    <a href="#" class="button is-link" disabled>Sort by Submission Date (ASC) </a>
+    <a href="#" class="button is-link" disabled>Sort by Submission Date (DESC) </a>
+    <a href="#" class="button is-link" disabled>Sort by Relevancy (Default) </a> 
+</div>
 <section class="section">
-    <div class="container">
+    
         {{ range .SearchResults }}
         <div class="card mb-4">
             <header class="card-header">
                 <p class="card-header-title">
-                {{.applicant}}&nbsp;<a href="/dbentry?id={{.id}}">{{ .id }}</a></p>
+                {{.applicant}}&nbsp;<a href="/dbentry?id={{.id}}" class="is-info ">{{ .id }}</a></p>
             </header>
             <div class="card-content">
                 <div class="media">
                     <div class="media-content">
-                        <p class="title is-4">{{ .title }}</p>
+                        <a href="/dbentry?id={{.id}}" class="is-size-3 link">{{ .title }}</a>
                     </div>
                 </div>
                 <div class="content">
@@ -52,16 +62,16 @@
                 </div>
             </div>
             <footer class="card-footer">
-                <div class="card-footer-item">
-                <p class="content">
+                <p class="card-header-title">
+                  Predicates: 
                 {{ range .predicates}}
-                    <a href="/dbentry?id={{.}}">{{ . }}</a>&#32; 
+                    <a href="/dbentry?id={{.}}" class="button is-info is-light">{{ . }}</a>&#32; 
                 {{ end }}
-                </p></div>
+                </p>
             </footer>
         </div>
         {{ end }}
-    </div>
+    
 </section>
     {{ if .MoreResults }}
     <section class="section">
@@ -81,7 +91,7 @@
             </div>
               <div class="column">
                 <div class="field has-addons">
-            <a class="button is-primary is-light is-medium is-fullwidth" href="/search?query={{.OriginalQuery.Query}}&offset={{.Offset}}" title="Next Page">
+            <a class="button is-primary is-medium is-fullwidth" href="/search?query={{.OriginalQuery.Query}}&offset={{.Offset}}" title="Next Page">
                 <span>
                   Next Page
                 </span>

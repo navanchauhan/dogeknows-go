@@ -11,6 +11,15 @@
 </section>
 {{end}}
 
+{{define "navbar"}}
+<nav class="navbar is-fixed-top is-primary" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+      <a href="/" class="navbar-item subtitle is-3">{{.GlobalVars.Name}}</a>
+  </div>
+</nav>
+{{end}}
+
+
 {{define "hero-medium"}}
 <section class="hero is-medium is-primary">
   <div class="hero-body">
