@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"html/template"
 	"io/fs"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
 
+	"github.com/getsentry/sentry-go"
 	"github.com/joho/godotenv"
 	"github.com/meilisearch/meilisearch-go"
 	mytemplates "github.com/navanchauhan/dogeknows-go/templates"
@@ -31,6 +33,13 @@ func create_pdf_url(year string, knumber string) string {
 }
 
 func main() {
+	sentry_err := sentry.Init(sentry.ClientOptions{
+		Dsn:              "https://72a0913f00e24d5da4d44ccde6ebcc9c@o126149.ingest.sentry.io/4504524880674816",
+		TracesSampleRate: 1.0,
+	})
+	if sentry_err != nil {
+		log.Fatalf("sentry.Init: %s", sentry_err)
+	}
 	err := godotenv.Load(".env")
 	if err != nil {
 		fmt.Println("Error loading .env file")
