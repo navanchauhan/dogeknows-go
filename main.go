@@ -100,6 +100,11 @@ func main() {
 		searchHandler(w, r, index, searchResultsTemplate2)
 	})
 
+	// Return "loaderio-270ce4134f3594bec728a59a83449796" for loader.io verification
+	http.HandleFunc("/loaderio-270ce4134f3594bec728a59a83449796/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "loaderio-270ce4134f3594bec728a59a83449796")
+	})
+
 	fmt.Println("Listening on port 8752")
 	http.ListenAndServe(":8752", nil)
 }
