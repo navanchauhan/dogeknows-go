@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/joho/godotenv"
@@ -24,11 +23,10 @@ var globalVariables = GlobalVars{
 var static embed.FS
 
 func create_pdf_url(year string, knumber string) string {
-	year_int, _ := strconv.Atoi(year[0:2])
-	if year[0] == '0' || year[0] == '1' || year[0] == '2' || year[0] == '3' || year[0] == '4' || year[0] == '5' && year[0:2] != "01" && year[0:2] != "00" {
-		return fmt.Sprintf("https://www.accessdata.fda.gov/cdrh_docs/pdf%d/%s.pdf", year_int, knumber)
+	if year[0] >= '0' && year[0] <= '5' && year[:2] != "01" && year[:2] != "00" {
+		return "https://www.accessdata.fda.gov/cdrh_docs/pdf" + year[:2] + "/" + knumber + ".pdf"
 	} else {
-		return fmt.Sprintf("https://www.accessdata.fda.gov/cdrh_docs/pdf/%s.pdf", knumber)
+		return "https://www.accessdata.fda.gov/cdrh_docs/pdf/" + knumber + ".pdf"
 	}
 }
 
