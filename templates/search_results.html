@@ -37,11 +37,11 @@
 </section>
 <div class="container is-fluid">
     <a href="#" class="button is-link" disabled>Export Results</a>
-    <a href="#" class="button is-link" disabled>Sort by Decision Date (ASC) </a>
-    <a href="#" class="button is-link" disabled>Sort by Decision Date (DESC) </a>
-    <a href="#" class="button is-link" disabled>Sort by Submission Date (ASC) </a>
-    <a href="#" class="button is-link" disabled>Sort by Submission Date (DESC) </a>
-    <a href="#" class="button is-link" disabled>Sort by Relevancy (Default) </a> 
+    <a href="/search?query={{.OriginalQuery.Query}}&maxHits={{.MaxResults}}&sort=subasc" class="button is-link">Sort by Submission Date (ASC) </a>
+    <a href="/search?query={{.OriginalQuery.Query}}&maxHits={{.MaxResults}}&sort=subdesc" class="button is-link">Sort by Submission Date (DESC) </a>
+    <a href="/search?query={{.OriginalQuery.Query}}&maxHits={{.MaxResults}}&sort=decasc" class="button is-link">Sort by Decision Date (ASC) </a>
+    <a href="/search?query={{.OriginalQuery.Query}}&maxHits={{.MaxResults}}&sort=decdesc" class="button is-link">Sort by Decision Date (DESC) </a>
+    <a href="/search?query={{.OriginalQuery.Query}}&maxHits={{.MaxResults}}" class="button is-link">Sort by Relevancy (Default) </a> 
 </div>
 <section class="section">
     
@@ -81,7 +81,7 @@
                 <div class="column">
                     <div class="field has-addons">
                         
-            <a class="button is-primary is-light is-medium is-fullwidth" href="/search?query={{.OriginalQuery.Query}}&page={{.PrevPage}}&maxHits={{.MaxResults}}" title="Previous Page">
+            <a class="button is-primary is-light is-medium is-fullwidth" href="/search?query={{.OriginalQuery.Query}}&page={{.PrevPage}}&maxHits={{.MaxResults}}&sort={{.Sort}}" title="Previous Page">
                 
                 <span class="icon is-small">
                     <i class="fa-solid fa-left-long"></i>
@@ -94,7 +94,7 @@
             {{ if .MoreResults }}
               <div class="column">
                 <div class="field has-addons">
-            <a class="button is-primary is-medium is-fullwidth" href="/search?query={{.OriginalQuery.Query}}&page={{.NextPage}}&maxHits={{.MaxResults}}" title="Next Page">
+            <a class="button is-primary is-medium is-fullwidth" href="/search?query={{.OriginalQuery.Query}}&page={{.NextPage}}&maxHits={{.MaxResults}}&sort={{.Sort}}" title="Next Page">
                 <span>
                   Next Page
                 </span>

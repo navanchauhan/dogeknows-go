@@ -16,6 +16,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request, index *meilisearch.In
 		//fmt.Println("query:", r.Form["query"])
 		var pageNo int64
 		var maxHits int64
+		var sortBy string
 		if r.Form["page"] != nil {
 			convertedInt, _ := strconv.ParseInt(r.FormValue("page"), 10, 64)
 			if convertedInt > 0 {
@@ -37,6 +38,23 @@ func searchHandler(w http.ResponseWriter, r *http.Request, index *meilisearch.In
 			maxHits = 20
 		}
 
+		if r.Form["sort"] != nil {
+			if r.FormValue("sort") == "subdesc" {
+				sortBy = "submission_date_timestamp:desc"
+			} else if r.FormValue("sort") == "subasc" {
+				sortBy = "submission_date_timestamp:asc"
+			} else if r.FormValue("sort") == "decasc" {
+				sortBy = "decision_date_timestamp:asc"
+			} else if r.FormValue("sort") == "decdesc" {
+				sortBy = "decision_date_timestamp:desc"
+			} else {
+				sortBy = ""
+			}
+
+		} else {
+			sortBy = ""
+		}
+
 		if maxHits > 100 {
 			maxHits = 100
 		}
@@ -46,25 +64,44 @@ func searchHandler(w http.ResponseWriter, r *http.Request, index *meilisearch.In
 			Page:       pageNo,
 		}
 
-		res, err := index.Search(query.Query, &meilisearch.SearchRequest{
-			HitsPerPage: query.MaxResults,
-			Page:        query.Page,
-			AttributesToRetrieve: []string{
-				"title",
-				"applicant",
-				"submission_date",
-				"predicates",
-				"id",
-			},
-			AttributesToCrop:      []string{"full_text"},
-			AttributesToHighlight: []string{"full_text"},
-			HighlightPreTag:       "<mark>",
-			HighlightPostTag:      "</mark>",
-		})
+		var res *meilisearch.SearchResponse
 
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
+		fmt.Println("sort:", sortBy)
+
+		if sortBy != "" {
+			res, _ = index.Search(query.Query, &meilisearch.SearchRequest{
+				HitsPerPage: query.MaxResults,
+				Page:        query.Page,
+				AttributesToRetrieve: []string{
+					"title",
+					"applicant",
+					"submission_date",
+					"predicates",
+					"id",
+				},
+				AttributesToCrop:      []string{"full_text"},
+				AttributesToHighlight: []string{"full_text"},
+				HighlightPreTag:       "<mark>",
+				HighlightPostTag:      "</mark>",
+				Sort: []string{
+					sortBy},
+			})
+		} else {
+			res, _ = index.Search(query.Query, &meilisearch.SearchRequest{
+				HitsPerPage: query.MaxResults,
+				Page:        query.Page,
+				AttributesToRetrieve: []string{
+					"title",
+					"applicant",
+					"submission_date",
+					"predicates",
+					"id",
+				},
+				AttributesToCrop:      []string{"full_text"},
+				AttributesToHighlight: []string{"full_text"},
+				HighlightPreTag:       "<mark>",
+				HighlightPostTag:      "</mark>",
+			})
 		}
 
 		searchTemplate.Execute(w, SearchResponse{
@@ -81,6 +118,7 @@ func searchHandler(w http.ResponseWriter, r *http.Request, index *meilisearch.In
 			ShowPrev:      res.Page > 1,
 			PrevPage:      res.Page - 1,
 			NextPage:      res.Page + 1,
+			Sort:          r.FormValue("sort"),
 		})
 
 	} else {

@@ -26,6 +26,7 @@ type SearchResponse struct {
 	ShowPrev      bool
 	PrevPage      int64
 	NextPage      int64
+	Sort          string
 }
 
 type DocumentResponse struct {
