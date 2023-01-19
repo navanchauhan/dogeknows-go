@@ -23,7 +23,7 @@
                 <tbody>
                     <tr>
                         <th>510(k) Number</th>
-                        <td><a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.SearchResults.id}}">{{ .SearchResults.id }}</a></td>
+                        <td><a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfPMN/pmn.cfm?ID={{.SearchResults.id}}" target="_blank">{{ .SearchResults.id }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a></td>
                     </tr>
                     <tr>
                         <th>Title</th>
@@ -83,7 +83,7 @@
                     <tr>
                         <th>Summary</th>
                         <td>
-                            <a href="{{.SummaryPDF}}">Summary</a>
+                            <a href="{{.SummaryPDF}}" target="_blank">Summary <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
                         </td>
                     </tr>
                 </tbody>
