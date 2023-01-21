@@ -1,3 +1,4 @@
 .env
 dogeknows-go
 tmp/
+.DS_Store
