@@ -34,5 +34,6 @@
     {{ if .MoreResults }}
     <a href="/classic/search?query={{.OriginalQuery.Query}}&page={{.PrevPage}}&maxHits={{.MaxResults}}"> <p>Next Page</p></a>
     {{ end }}
+    <script defer data-domain="fda510k.navan.dev" src="https://plausible.io/js/script.js"></script>
 </body>
 </html>
