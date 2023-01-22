@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <body>
+<head>
+    <title>Search Results</title>
+    <script defer data-domain="fda510k.navan.dev" src="https://plausible.io/js/script.js"></script>
+</head>
 <h1>Search Results</h1>
 <p>Showing results for <b>{{.OriginalQuery.Query}}</b></p>
 <p>Go <a href="/">home</a></p>
@@ -34,6 +38,6 @@
     {{ if .MoreResults }}
     <a href="/classic/search?query={{.OriginalQuery.Query}}&page={{.PrevPage}}&maxHits={{.MaxResults}}"> <p>Next Page</p></a>
     {{ end }}
-    <script defer data-domain="fda510k.navan.dev" src="https://plausible.io/js/script.js"></script>
+    
 </body>
 </html>
